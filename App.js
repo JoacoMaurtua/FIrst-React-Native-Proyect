@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native'; //componentes nativos de react native
+import { StyleSheet, View, Button, TextInput, ScrollView, FlatList } from 'react-native'; //componentes nativos de react native
+import GoalItem from './components/GoalItem';
 
 //View hace el papel de div,section,container y de cualquier contenedor que agrupe mas elementos
 //flex ya esta por defecto, se pueden usar las propiedades flex-box de frente
@@ -64,9 +65,7 @@ export default function App() {
           data={weekGoals} //primer prop necesario: el arreglo a renderizar
           renderItem={(itemData)=>{ //funcion que devuelve lo que se va a renderizar
             return(
-              <View style={styles.goalListElement}>
-                <Text style={styles.goalListTextElement}>{itemData.item.text}</Text>
-              </View>
+              <GoalItem text = {itemData.item.text}/>
             )
           }}
           keyExtractor={(item,index)=>{ //esta propiedad normalmente se utiliza cuando renderizamos una lista de cosas traidas de una API
@@ -109,14 +108,5 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 
-  goalListElement: {
-    margin: 7,
-    padding: 7,
-    backgroundColor: '#00ced1',
-    borderRadius: 6,
-  },
-
-  goalListTextElement:{
-    color:'#ffffff',
-  }
+ 
 });
