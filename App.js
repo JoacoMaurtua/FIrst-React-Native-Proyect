@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { StyleSheet, View, Button, TextInput, ScrollView, FlatList } from 'react-native'; //componentes nativos de react native
+import { StyleSheet, View, ScrollView, FlatList } from 'react-native'; //componentes nativos de react native
 import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
 
 //View hace el papel de div,section,container y de cualquier contenedor que agrupe mas elementos
 //flex ya esta por defecto, se pueden usar las propiedades flex-box de frente
@@ -26,15 +27,12 @@ import GoalItem from './components/GoalItem';
 //a ver en la pantalla se renderizan) y si se tiene una lista con muchos elementos, podria provocar un
 //problema de rendimiento, frente a esto existe otro enfoque: usar el componente FlatList 
 export default function App() {
-  const [newGoal, setNewGoal] = useState('');
+  
   const [weekGoals, setWeekGoals] = useState([]);
 
-  const newInputText = (newInput) => {
-    setNewGoal(newInput);
-  };
-
+  
   //Devuelve un arreglo con los goals anteriores + el nuevo goal ingresado
-  const addNewInputText = () => {
+  const addNewInputText = (newGoal) => {
     setWeekGoals((currentWeekGoals) => [
       ...currentWeekGoals,
       {text: newGoal, id: Math.random().toString()}, 
@@ -43,14 +41,7 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Your week goal"
-          onChangeText={newInputText}
-        />
-        <Button title="Add Goal" padding="2" onPress={addNewInputText} />
-      </View>
+      <GoalInput addNewInputText={addNewInputText} />
       <View style={styles.goalsContainer}>
        {/*  <ScrollView>
           {weekGoals.map((goal, index) => (
@@ -75,7 +66,8 @@ export default function App() {
       </View>
     </View>
   );
-}
+};
+
 
 const styles = StyleSheet.create({
   appContainer: {
@@ -84,29 +76,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 
-  inputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
-  },
-
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    width: '70%',
-    height: 40,
-    marginRight: 8,
-    paddingLeft: 10,
-    flex: 1,
-  },
-
   goalsContainer: {
     flex: 4,
   },
 
- 
 });
