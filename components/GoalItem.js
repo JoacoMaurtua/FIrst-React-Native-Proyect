@@ -1,12 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'; //componentes nativos de react native
+import { StyleSheet, Text, View, Pressable } from 'react-native'; //componentes nativos de react native
 
+//El componente Pressable hace que un elemento sea presionable en la pantalla, es decir
+//que al precionarlo se dispare algun evento
 
-const GoalItem = ({text}) => {
+//bind es un metodo de js que permite configurar una funcion previamente a su ejecucion
+
+const GoalItem = ({ text, onDeleteItem, id }) => {
   return (
-    <View style={styles.goalListElement}>
+    <Pressable onPress={onDeleteItem.bind(this,id)}> 
+      <View style={styles.goalListElement}>
         <Text style={styles.goalListTextElement}>{text}</Text>
-    </View>
-  )
+      </View>
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -17,10 +23,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
 
-  goalListTextElement:{
-    color:'#ffffff',
+  goalListTextElement: {
+    color: '#ffffff',
   },
-
-})
+});
 
 export default GoalItem;

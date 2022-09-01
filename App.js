@@ -7,8 +7,8 @@ import GoalInput from './components/GoalInput';
 //flex ya esta por defecto, se pueden usar las propiedades flex-box de frente
 // Los botones no tienen un prop de estilos, se les da a traves de atributos
 //El manejo de eventos se hace de una forma parecida a React, con event handlers, solo que con nombres algo diferentes
-         //onChange --> onChangeText
-         //onClick --> onPress
+//onChange --> onChangeText
+//onClick --> onPress
 
 //Para manejar estados aqui tambien usamos useState
 
@@ -25,25 +25,30 @@ import GoalInput from './components/GoalInput';
 
 //La desventaja de usar ScrollView es que todos los elementos de la lista(incluso los que no se alcanzan
 //a ver en la pantalla se renderizan) y si se tiene una lista con muchos elementos, podria provocar un
-//problema de rendimiento, frente a esto existe otro enfoque: usar el componente FlatList 
+//problema de rendimiento, frente a esto existe otro enfoque: usar el componente FlatList
 export default function App() {
-  
   const [weekGoals, setWeekGoals] = useState([]);
 
-  
   //Devuelve un arreglo con los goals anteriores + el nuevo goal ingresado
   const addNewInputText = (newGoal) => {
     setWeekGoals((currentWeekGoals) => [
       ...currentWeekGoals,
-      {text: newGoal, id: Math.random().toString()}, 
+      { text: newGoal, id: Math.random().toString() },
     ]);
+  };
+
+  //Devuelvo un arreglo con todos los goals menos el que se elimino
+  const handleOnDelete = (id) => {
+    setWeekGoals((currentWeekGoals) => {
+      return currentWeekGoals.filter((goal) => goal.id !== id);
+    });
   };
 
   return (
     <View style={styles.appContainer}>
       <GoalInput addNewInputText={addNewInputText} />
       <View style={styles.goalsContainer}>
-       {/*  <ScrollView>
+        {/*  <ScrollView>
           {weekGoals.map((goal, index) => (
             <View style={styles.goalListElement} key={index}>
               <Text style={styles.goalListTextElement}>
@@ -54,20 +59,23 @@ export default function App() {
         </ScrollView> */}
         <FlatList
           data={weekGoals} //primer prop necesario: el arreglo a renderizar
-          renderItem={(itemData)=>{ //funcion que devuelve lo que se va a renderizar
-            return(
-              <GoalItem text = {itemData.item.text}/>
-            )
+          renderItem={(itemData) => {  //segundo prop funcion que devuelve lo que se va a renderizar
+            return (
+              <GoalItem
+                text={itemData.item.text}
+                id={itemData.item.id}
+                onDeleteItem={handleOnDelete}
+              />
+            );
           }}
-          keyExtractor={(item,index)=>{ //esta propiedad normalmente se utiliza cuando renderizamos una lista de cosas traidas de una API
+          keyExtractor={(item, index) => { //esta propiedad normalmente se utiliza cuando renderizamos una lista de cosas traidas de una API
             return item.id;
-          }}  
+          }}
         />
       </View>
     </View>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
   appContainer: {
@@ -79,5 +87,4 @@ const styles = StyleSheet.create({
   goalsContainer: {
     flex: 4,
   },
-
 });

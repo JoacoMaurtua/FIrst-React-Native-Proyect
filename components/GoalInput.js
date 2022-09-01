@@ -5,6 +5,10 @@ import { View, TextInput, StyleSheet, Button } from 'react-native';
 const GoalInput = ({addNewInputText}) => {
   const [newGoal, setNewGoal] = useState('');
 
+  const newInputText = (newInput) => {
+    setNewGoal(newInput);
+  };
+
   const addGoalHandler = () =>{
     addNewInputText(newGoal);
     setNewGoal('');
@@ -15,7 +19,7 @@ const GoalInput = ({addNewInputText}) => {
       <TextInput
         style={styles.textInput}
         placeholder="Your week goal"
-        onChangeText={e => setNewGoal(e.target.value)}
+        onChangeText={newInputText}
         value={newGoal}
       />
       <Button title="Add Goal" padding="2" onPress={addGoalHandler} />
