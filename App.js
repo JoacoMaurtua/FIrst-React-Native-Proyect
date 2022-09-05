@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { StyleSheet, View, ScrollView, FlatList, Button } from 'react-native'; //componentes nativos de react native
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  FlatList,
+  Button,
+  StatusBar,
+} from 'react-native'; //componentes nativos de react native
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 
@@ -26,17 +33,21 @@ import GoalInput from './components/GoalInput';
 //La desventaja de usar ScrollView es que todos los elementos de la lista(incluso los que no se alcanzan
 //a ver en la pantalla se renderizan) y si se tiene una lista con muchos elementos, podria provocar un
 //problema de rendimiento, frente a esto existe otro enfoque: usar el componente FlatList
+
+////Para cambiar el color de los iconos superiores del celular se usa StatusBar
+
 export default function App() {
+
   const [weekGoals, setWeekGoals] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const startAddGoalHandler =()=>{
+  const startAddGoalHandler = () => {
     setModalVisible(true);
   };
 
-  const closeAddGoalHandler =()=>{
+  const closeAddGoalHandler = () => {
     setModalVisible(false);
-  }
+  };
 
   //Devuelve un arreglo con los goals anteriores + el nuevo goal ingresado
   const addNewInputText = (newGoal) => {
@@ -55,11 +66,21 @@ export default function App() {
   };
 
   return (
-    <View style={styles.appContainer}>
-      <Button title="Add new goal" color="#00ced1" onPress={startAddGoalHandler}/>
-      <GoalInput addNewInputText={addNewInputText} showModal={modalVisible} closeModal={closeAddGoalHandler}/>
-      <View style={styles.goalsContainer}>
-        {/*  <ScrollView>
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add new goal"
+          color="#00ced1"
+          onPress={startAddGoalHandler}
+        />
+        <GoalInput
+          addNewInputText={addNewInputText}
+          showModal={modalVisible}
+          closeModal={closeAddGoalHandler}
+        />
+        <View style={styles.goalsContainer}>
+          {/*  <ScrollView>
           {weekGoals.map((goal, index) => (
             <View style={styles.goalListElement} key={index}>
               <Text style={styles.goalListTextElement}>
@@ -68,23 +89,26 @@ export default function App() {
             </View>
           ))}
         </ScrollView> */}
-        <FlatList
-          data={weekGoals} //primer prop necesario: el arreglo a renderizar
-          renderItem={(itemData) => {  //segundo prop funcion que devuelve lo que se va a renderizar
-            return (
-              <GoalItem
-                text={itemData.item.text}
-                id={itemData.item.id}
-                onDeleteItem={handleOnDelete}
-              />
-            );
-          }}
-          keyExtractor={(item, index) => { //esta propiedad normalmente se utiliza cuando renderizamos una lista de cosas traidas de una API
-            return item.id;
-          }}
-        />
+          <FlatList
+            data={weekGoals} //primer prop necesario: el arreglo a renderizar
+            renderItem={(itemData) => {
+              //segundo prop funcion que devuelve lo que se va a renderizar
+              return (
+                <GoalItem
+                  text={itemData.item.text}
+                  id={itemData.item.id}
+                  onDeleteItem={handleOnDelete}
+                />
+              );
+            }}
+            keyExtractor={(item, index) => {
+              //esta propiedad normalmente se utiliza cuando renderizamos una lista de cosas traidas de una API
+              return item.id;
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
